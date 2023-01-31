@@ -1,0 +1,25 @@
+import pyodbc
+import pandas as pd
+
+dados_conexao = (
+    "Driver={SQL Server};"
+    "Server=DESKTOP-DIFHP7L;"
+    "Database=IRAN_LAB;"
+)
+
+conexao = pyodbc.connect(dados_conexao)
+
+cursor = conexao.cursor()
+
+df = pd.read_csv(r'C:\Users\iranr\Downloads\Python\IRAN_LAB.csv')
+
+for index, row in df.iterrows():
+    cursor.execute(
+        'INSERT INTO dbo.IRAN_PYTHON (ID, NOME) VALUES (?,?)'
+        ,row.ID
+        ,row.NOME
+    )
+
+conexao.commit()
+cursor.close()
+
